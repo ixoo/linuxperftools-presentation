@@ -1,0 +1,29 @@
+h1{text-align:center;}
+.title h1{font-size:300%;}
+.title .author{color:#000000;text-shadow:0 0 3px #ffffff;}
+h1 .small{font-size:20%;}
+.huge{font-size:150%;}
+#me {width:500px;}
+#me-contact{padding-left:1em;}
+#twitter,#gplus{vertical-align:middle;}
+a:link,a:visited,a:hover{text-decoration:none;}
+#io{width:75%;list-style-type:none;background-color:#E0E4CC;padding-top:1em;padding-bottom:1em;border-radius:15px;margin:0 auto;}#io li{display:-webkit-box;-webkit-box-orient:horizontal;}#io li div:first-child{-webkit-box-flex:1;}
+#io li div:last-child{margin-right:1em;}
+.hcenter{display:-webkit-box;display:-moz-box;display:-o-box;display:-ms-box;display:box;-webkit-box-orient:horizontal;-moz-box-orient:horizontal;-o-box-orient:horizontal;box-orient:horizontal;-webkit-box-pack:center;-moz-box-pack:center;-o-box-pack:center;box-pack:center;-webkit-box-align:center;-moz-box-align:center;-o-box-align:center;box-align:center;}.hcenter *:last-child{-webkit-box-flex:1;}
+.vcenter{display:-webkit-box;display:-moz-box;display:-o-box;display:-ms-box;display:box;-webkit-box-orient:vertical;-moz-box-orient:vertical;-o-box-orient:vertical;box-orient:vertical;-webkit-box-pack:center;-moz-box-pack:center;-o-box-pack:center;box-pack:center;}.vcenter >*{-webkit-box-flex:1;}
+.center{margin:auto 0;}
+.small{font-size:60%;}
+#test{display:-webkit-box;-webkit-box-orient:horizontal;}
+ul.bullet{list-style:none;padding:0;margin:0;font-size:120%;}
+ul.bullet li{padding-left:1em;text-indent:-0.7em;}
+ul.bullet li:before{content:"➪ ";}
+#bg-jean1{-webkit-background-size:auto;-moz-background-size:auto;-o-background-size:auto;background-size:auto;background:url('../images/jean1.png') repeat;}
+#bg-jean2{-webkit-background-size:auto;-moz-background-size:auto;-o-background-size:auto;background-size:auto;background:url('../images/jean2.jpg') repeat;}
+#bg-jean3{-webkit-background-size:auto;-moz-background-size:auto;-o-background-size:auto;background-size:auto;background:url('../images/jean3.jpg') repeat;}
+#bg-jean4{-webkit-background-size:auto;-moz-background-size:auto;-o-background-size:auto;background-size:auto;background:url('../images/jean4.jpg') repeat;}
+#bg-motorbike{-webkit-background-size:contain;-moz-background-size:contain;-o-background-size:contain;background-size:contain;background:url('../images/motorbike.jpeg') bottom no-repeat,#000000;}
+#bg-motorbike2{-webkit-background-size:contain;-moz-background-size:contain;-o-background-size:contain;background-size:contain;background:url('../images/motorbike2.jpeg') bottom no-repeat,#000000;}
+#bg-black{background:#000;}
+#bg-aoi{background:#69D2E7;}
+.title h1{color:#A7DBD8;}
+#async2{width:500px;height:auto;}
