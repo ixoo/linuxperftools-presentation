@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Playing with Linux Performance Tools</title>
+    <link href="css/slides.css" rel="stylesheet" type="text/css">
+    <link href="css/custom.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="js/highlight/styles/solarized_light.css">
+  </head>
+  <body>
+    <div id="content" class="hidden">
+      <div id="bg-black" class="background"></div>
+      <div id="bg-jean1" class="background"></div>
+      <div id="bg-jean2" class="background"></div>
+      <div id="bg-jean3" class="background"></div>
+      <div id="bg-jean4" class="background"></div>
+      <div id="bg-aoi" class="background"></div>
+      <div id="bg-carbon" class="background"></div>
+      <div id="bg-motorbike" class="background"></div>
+      <div id="bg-motorbike2" class="background"></div>
+
+
+      <div class="slide centercontents title transparent" data-backgroundid="bg-motorbike">
+        <h1>Playing with<br/>Linux Performance Tools</h1>
+				<section class="author">
+				Julien Etienne
+				</section>
+     </div>
+
+      <div class="slide slide-in" data-backgroundid="bg-jean1">
+        <section class="hcenter">
+          <div class="slide-in-left">
+            <img id="me" src="images/julien.png" alt="Julien Etienne">
+          </div>
+          <div id="me-contact" class="slide-in-right">
+            <h1>Julien Etienne</h1>
+            <p>Team Leader, aMaDEUS</p>
+            <p>G33k</p>
+             <p><img id="twitter" src="images/twitter.png" alt="twitter"/>&nbsp;<a href="http://twitter.com/#!/ix4r">@ix4r</a></p>
+            <p><img id="gplus" src="images/gplus.png"alt="google+"/>&nbsp;<a href="https://plus.google.com/104466422350265094158">+Julien Etienne</a></p>
+          </div>
+        </section>
+      </div>
+
+      <div class="slide centercontents" data-backgroundid="bg-jean2">
+        <h1>Old School Profiling (1/3)</h1>
+        <img alt="Stethoscope" src="images/stethoscope.png"/>
+      </div>
+
+			<div class="slide">
+        <h1>Old School Profiling (2/3)</h1>
+        <section>
+					gprof
+          <ul>
+            <li>Standard</li>
+            <li>Code instrumentation: requires a dedicated compilation (-pg flag)</li>
+            <li>Mixes code snooping &amp; stochastical stats sampling</li>
+          </ul>
+					<div class="highlight">But</div>
+          <ul>
+            <li>Only profiles the instrumented code</li>
+          </ul>
+        </section>
+      </div>
+
+			<div class="slide">
+        <h1>Old School Profiling (3/3)</h1>
+        <section>
+					valgrind / callgrind
+          <ul>
+            <li>No recompilation required</li>
+          </ul>
+					<div class="highlight">But</div>
+          <ul>
+            <li>Simulate the instructions (slow, uniform cost, fake cache...)</li>
+						<li>Limited to userland</li>
+          </ul>
+        </section>
+      </div>
+
+
+			<div class="slide">
+        <h1>What do we need ?</h1>
+        <section>
+          <ul>
+            <li>Low cost profiling</li>
+						<li>More accurate information</li>
+						<li>System wide profiling</li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="slide centercontents" data-backgroundid="bg-jean3">
+        <h1>The new generation</h1>
+        <img alt="X-Ray" src="images/xray.png"/>
+      </div>
+
+      <div class="slide">
+        <h1>perf: Linux profiling<br/>with performance counters</h1>
+        <section>
+        <ul class="bullet">
+          <li>Use hardware counters of the PMU</li>
+          <li>Accurate for few counters</li>
+          <li>Stochastic approach for many counters</li>
+          <li>No recompilation</li>
+          <li>Performance impact very limited</li>
+          <li>System-wide profiling available</li>
+        </ul>
+        </section>
+      </div>
+
+      <div class="slide">
+        <h1>How to use perf ?</h1>
+        <section>
+        <ul>
+          <li>You need <div class="highlight">a CPU with a PMU</div></li>
+          <li>root access rights for system-wide profiling</li>
+          <li>DEMO</li>
+        </ul>
+        <pre><code style="font-size:50%;">
+perf stat -B dd if=/dev/zero of=/dev/null count=100000
+100000+0 records in
+100000+0 records out
+51200000 bytes (51 MB) copied, 0.0331147 s, 1.5 GB/s
+
+ Performance counter stats for 'dd if=/dev/zero of=/dev/null count=100000':
+
+         33.675664 task-clock                #    0.988 CPUs utilized          
+                 7 context-switches          #    0.000 M/sec                  
+                 0 CPU-migrations            #    0.000 M/sec                  
+               245 page-faults               #    0.007 M/sec                  
+        89,978,400 cycles                    #    2.672 GHz                    
+        29,352,855 stalled-cycles-frontend   #   32.62% frontend cycles idle   
+        10,373,332 stalled-cycles-backend    #   11.53% backend  cycles idle   
+       144,418,913 instructions              #    1.61  insns per cycle        
+                                             #    0.20  stalled cycles per insn
+        28,045,436 branches                  #  832.810 M/sec                  
+            15,143 branch-misses             #    0.05% of all branches        
+
+       0.034084758 seconds time elapsed
+        </code></pre>
+        </section>
+      </div>
+
+			<div class="slide">
+        <h1>What about instrumentation ?<br/>or why you need System Tap ;)</h1>
+        <section>
+					While perf provides performance metrics,<br/>System Tap allows you to
+          <ul>
+            <li>Insert probes in the kernel and in user land</li>
+            <li>script the data collection &amp; reporting</li>
+            <li>Basically any resource can be monitored and/or hooked</li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="slide">
+        <h1>How to use System Tap ? (1/3)</h1>
+        <section>
+        <ul>
+        </ul>
+        <pre><code style="font-size:50%;">
+#! /usr/bin/env stap
+# Monitor removed file on a NFS server
+
+global nfsd_unlink_active, vsf_unlink_success
+
+probe nfsd.unlink
+{
+  nfsd_unlink_active[tid()] = 1;
+}
+
+probe nfsd.unlink.return
+{
+  if (vsf_unlink_success[tid()]) {
+    printf("address %s unlinks %s\n",
+           ip_ntop(addr_from_rqst($rqstp)),
+           kernel_string($fname))
+    delete vsf_unlink_success[tid()]
+  }
+  delete nfsd_unlink_active[tid()]
+}
+
+probe kernel.function("vfs_unlink").return
+{
+  if (nfsd_unlink_active[tid()] && $return == 0)
+    vsf_unlink_success[tid()] = 1
+}        </code></pre>
+        </section>
+      </div>
+
+      <div class="slide">
+        <h1>How to use System Tap ? (2/3)</h1>
+        <section>
+        <ul>
+        </ul>
+        <pre><code style="font-size:50%;">
+#! /usr/bin/env stap
+
+# This script tries to identify contended user-space locks by hooking
+# into the futex system call.
+
+global FUTEX_WAIT = 0 /*, FUTEX_WAKE = 1 */
+global FUTEX_PRIVATE_FLAG = 128 /* linux 2.6.22+ */
+global FUTEX_CLOCK_REALTIME = 256 /* linux 2.6.29+ */
+
+global lock_waits # long-lived stats on (tid,lock) blockage elapsed time
+global process_names # long-lived pid-to-execname mapping
+
+probe syscall.futex.return {  
+  if (($op & ~(FUTEX_PRIVATE_FLAG|FUTEX_CLOCK_REALTIME)) != FUTEX_WAIT) next
+  process_names[pid()] = execname()
+  elapsed = gettimeofday_us() - @entry(gettimeofday_us())
+  lock_waits[pid(), $uaddr] <<< elapsed
+}
+
+probe end {
+  foreach ([pid+, lock] in lock_waits) 
+    printf ("%s[%d] lock %p contended %d times, %d avg us\n",
+            process_names[pid], pid, lock, @count(lock_waits[pid,lock]),
+            @avg(lock_waits[pid,lock]))
+}        </code></pre>
+        </section>
+      </div>
+
+      <div class="slide">
+        <h1>How to use System Tap ? (3/3)</h1>
+        <h2 style="text-align:center;">Demo !</h2>
+      </div>
+
+      <div class="slide" data-backgroundid="bg-jean4">
+        <h1>Conclusion</h1>
+        <section>
+        <ul class="bullet">
+          <li>Use the right tool for the job</li>
+          <li>System-wide analysis is possible</li>
+          <li>Enjoy Linux !</li>
+        </ul>
+        </section>
+      </div>
+
+      <div class="slide">
+        <h1>Conclusion for Mac/BSD/Solaris addicts</h1>
+        <section>
+        <ul class="bullet">
+          <li>Use DTrace in place of System Tap</li>
+          <li>It's System Tap predecessor and it just works</li>
+          <li>Enjoy !</li>
+        </ul>
+        </section>
+      </div>
+
+      <div class="slide centercontents">
+        <h1>Conclusion for Windows addicts</h1>
+        <h2>Sorry ;)</h2>
+      </div>
+
+      <div class="slide">
+        <h1>Credits</h1>
+        <ul>
+          <li><a href="https://github.com/sleeper/goliath-presentation">Presentation template</a> by <a href="https://github.com/sleeper">sl33p3r</a></li>
+					<li>Motorbike photo by <a href="http://www.flickr.com/photos/willvision/">WillVision</a> (CC license)</li>
+          <li><a href="http://www.flickr.com/photos/surroundsound5000/4603946826/">Stethoscope photo</a> by SurroundSound5000 (CC license)</li>
+          <li>Pin-up image by Eizo</li>
+        </ul>
+      </div>
+
+      <div class="slide title transparent" data-backgroundid="bg-motorbike2">
+        <h1>Thank You !</h1>
+     </div>
+
+    </div>
+    <div id="background"></div>
+    <div id="stage"> </div>
+    <script src="js/highlight/highlight.pack.js"></script>
+    <script src="js/slides.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+  </body>
+</html>
+
